@@ -30,6 +30,13 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 });
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Backend is running 🚀"
+  });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
