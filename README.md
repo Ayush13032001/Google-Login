@@ -8,8 +8,8 @@ The project is deployed on **Render** for both frontend and backend.
 
 ## 🚀 Live Demo
 
-- 🔗 **Frontend**: [https://your-frontend.onrender.com](https://your-frontend.onrender.com)
-- 🔗 **Backend**: [https://google-login-io2y.onrender.com](https://google-login-io2y.onrender.com)
+- 🔗 **Frontend**: [https://your-frontend.onrender.com](https://google-login-3-frontend11.onrender.com)
+- 🔗 **Backend**: [https://google-login-io2y.onrender.com](https://google-login-31.onrender.com)
 
 ---
 
