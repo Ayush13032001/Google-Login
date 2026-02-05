@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "start": "nodemon index.js"
   },
   "keywords": [],
@@ -17,5 +18,8 @@
     "googleapis": "^171.2.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
