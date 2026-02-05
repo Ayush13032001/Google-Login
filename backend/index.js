@@ -7,7 +7,18 @@ require("./models/dbConnection");
 const authRoutes = require("./routes/authRouter");
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://google-login-3-frontend11.onrender.com",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// IMPORTANT: handle preflight explicitly
+app.options("*", cors());
+
+
 app.use(express.json());
 
 /* ✅ ROOT ROUTE — MUST BE FIRST */
