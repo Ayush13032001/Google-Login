@@ -12,9 +12,13 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 
 // 404 handler
-app.use((req, res, next) => {
-    next(new AppError(`Can't find ${req.originalUrl} on the server`, 404));
+app.use((req, res) => {
+    res.status(404).json({
+        status: "fail",
+        message: `Can't find ${req.originalUrl} on the server`
+    });
 });
+
 
 // global error handler
 app.use((err, req, res, next) => {
