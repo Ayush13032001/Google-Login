@@ -3,40 +3,31 @@ const jwt = require("jsonwebtoken");
 const { oauth2Client } = require("../utils/googleConfig");
 const userModel = require("../models/userModel");
 
-/* STEP 1: Redirect to Google */
-exports.googleAuth = (req, res) => {
-  const url = oauth2Client.generateAuthUrl({
-    access_type: "offline",
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email",
-    ],
-  });
-
-  res.redirect(url);
-};
-
-/* STEP 2: Google callback */
-exports.googleCallback = async (req, res) => {
+/* ✅ SINGLE GOOGLE LOGIN HANDLER */
+exports.googleAuth = async (req, res) => {
   try {
     const code = req.query.code;
+    if (!code) {
+      return res.status(400).json({ message: "Authorization code missing" });
+    }
 
-    const googleRes = await oauth2Client.getToken(code);
-    oauth2Client.setCredentials(googleRes.tokens);
+    const { tokens } = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(tokens);
 
     const userRes = await axios.get(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
+      "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
+      {
+        headers: {
+          Authorization: `Bearer ${tokens.access_token}`,
+        },
+      }
     );
 
     const { email, name, picture } = userRes.data;
 
     let user = await userModel.findOne({ email });
     if (!user) {
-      user = await userModel.create({
-        name,
-        email,
-        image: picture,
-      });
+      user = await userModel.create({ name, email, image: picture });
     }
 
     const token = jwt.sign(
@@ -51,7 +42,7 @@ exports.googleCallback = async (req, res) => {
       user,
     });
   } catch (err) {
-    console.error(err);
+    console.error("Google Auth Error:", err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
